@@ -1,0 +1,30 @@
+﻿{
+	"Tags": [
+		{
+			"Name": "Tag test",
+			"Macros": [
+				{
+					"Name": "test",
+					"Text": "This is a testing Macro."
+				},
+				{
+					"Name": "testing",
+					"Text": "This is an other testing Macro."
+				}
+			]
+		},
+		{
+			"Name": "Tag test 2",
+			"Macros": [
+				{
+					"Name": "example",
+					"Text": "This is a testing Macro."
+				},
+				{
+					"Name": "examples",
+					"Text": "This is an other testing Macro."
+				}
+			]
+		}
+	]
+}
