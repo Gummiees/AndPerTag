@@ -1,16 +1,16 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Models;
 using AndPerTag.Utilities;
-using Gma.System.MouseKeyHook;
 using System.ComponentModel;
 using System.Windows.Forms;
+using WindowsHook;
 
 namespace AndPerTag.Services
 {
     public class GlobalKeyEvents
     {
         #region GLOBAL VARIABLES
-        private IKeyboardMouseEvents m_Events;
+        private IKeyboardMouseEvents m_GlobalHook;
         private bool pressedAndpersand = false;
         private string macroName;
         #endregion
@@ -36,16 +36,16 @@ namespace AndPerTag.Services
 
         private void Subscribe(IKeyboardMouseEvents events)
         {
-            m_Events = events;
-            m_Events.KeyUp += OnKeyUp;
+            m_GlobalHook = events;
+            m_GlobalHook.KeyUp += OnKeyUp;
         }
 
         private void Unsubscribe()
         {
-            if (m_Events == null) return;
+            if (m_GlobalHook == null) return;
 
-            m_Events.Dispose();
-            m_Events = null;
+            m_GlobalHook.Dispose();
+            m_GlobalHook = null;
         }
 
         /// <summary>
@@ -53,15 +53,15 @@ namespace AndPerTag.Services
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnKeyUp(object sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, WindowsHook.KeyEventArgs e)
         {
             // If it's '&' key and it hasn't been pressed before, the user might be starting to write the name of a macro.
-            if (e.Shift && e.KeyCode == Keys.D6 && !pressedAndpersand)
+            if (e.Shift && e.KeyCode == WindowsHook.Keys.D6 && !pressedAndpersand)
             {
                 pressedAndpersand = true;
             }
             // If it's '#' and '&' has been pressed before, the used has written the name of a macro.
-            else if (e.Alt && e.KeyCode == Keys.D3 && pressedAndpersand && !string.IsNullOrWhiteSpace(macroName))
+            else if (e.Alt && e.KeyCode == WindowsHook.Keys.D3 && pressedAndpersand && !string.IsNullOrWhiteSpace(macroName))
             {
                 Macro macro = GetMacro();
                 // Emits the event with the user search and if it has been found.
@@ -82,7 +82,7 @@ namespace AndPerTag.Services
             }
             // If the key number is between 'A' and 'Z', it belongs to the tag name.
             // TODO: The program should also accept numbers on the macro names.
-            else if (e.KeyData >= Keys.A && e.KeyData <= Keys.Z && pressedAndpersand)
+            else if (e.KeyData >= WindowsHook.Keys.A && e.KeyData <= WindowsHook.Keys.Z && pressedAndpersand)
             {
                 macroName += (char)e.KeyData;
             }

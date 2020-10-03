@@ -1,10 +1,9 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Services;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
-namespace AndPerTag.Forms
+namespace AndPerTagCore.Forms
 {
     public partial class MainForm : Form
     {
@@ -15,7 +14,6 @@ namespace AndPerTag.Forms
             globalKeyEvents.SubscribeGlobal();
             FormClosing += globalKeyEvents.Main_Closing;
             globalKeyEvents.macroEventHandler += MacroEventListener;
-            SetNotifyIcon();
         }
 
         private void MacroEventListener(object sender, MacroEventArgs e)
@@ -33,27 +31,16 @@ namespace AndPerTag.Forms
         /// <summary>
         /// If the form is minimized, hide it from the task bar and show the balloon tooltip.
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Form1_Resize(object sender, EventArgs e)
+        protected override void OnResize(EventArgs e)
         {
+            base.OnResize(e);
             if (this.WindowState == FormWindowState.Minimized)
             {
-                Hide();
+                this.ShowInTaskbar = false;
                 ShowBalloonTip("AndPerTag is still working");
+                this.Hide();
             }
-        }
-
-        /// <summary>
-        /// Sets the default configuration for the tray icon and sets the program as minimized.
-        /// </summary>
-        private void SetNotifyIcon()
-        {
-            this.WindowState = FormWindowState.Minimized;
-            notifyIcon.Visible = true;
-            notifyIcon.Text = "AndPerTag - Macros";
-            notifyIcon.Icon = new Icon("Assets/Icon/andpertag_logo.ico");
-            ShowBalloonTip("AndPerTag is still working");
         }
 
         /// <summary>
@@ -63,10 +50,10 @@ namespace AndPerTag.Forms
         /// <param name="icon"></param>
         private void ShowBalloonTip(string title, ToolTipIcon? icon = null)
         {
-            notifyIcon.ShowBalloonTip(10000);
             notifyIcon.BalloonTipTitle = title;
             notifyIcon.BalloonTipText = "Balloon Tip Text.";
             notifyIcon.BalloonTipIcon = icon ?? ToolTipIcon.Info;
+            notifyIcon.ShowBalloonTip(10000);
         }
 
         /// <summary>
@@ -77,11 +64,15 @@ namespace AndPerTag.Forms
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
+            this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Normal;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Show();
+            this.ShowInTaskbar = true;
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }
