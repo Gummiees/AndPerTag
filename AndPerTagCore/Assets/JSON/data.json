@@ -2,6 +2,7 @@
 	"Tags": [
 		{
 			"Name": "Tag test",
+			"Color": "#fff694",
 			"Macros": [
 				{
 					"Name": "test",
@@ -15,6 +16,7 @@
 		},
 		{
 			"Name": "Tag test 2",
+			"Color": "#94ffd8",
 			"Macros": [
 				{
 					"Name": "example",

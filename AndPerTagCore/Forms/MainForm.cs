@@ -1,5 +1,6 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Services;
+using AndPerTagCore.Services;
 using System;
 using System.Windows.Forms;
 
@@ -7,13 +8,22 @@ namespace AndPerTagCore.Forms
 {
     public partial class MainForm : Form
     {
+        private readonly TagsService tagsService = new TagsService();
+        private readonly MacroService macroService;
+
         public MainForm()
         {
             InitializeComponent();
+
             GlobalKeyEvents globalKeyEvents = new GlobalKeyEvents();
             globalKeyEvents.SubscribeGlobal();
             FormClosing += globalKeyEvents.Main_Closing;
             globalKeyEvents.macroEventHandler += MacroEventListener;
+
+            macroService = new MacroService(tagsService);
+
+            tagsService.PrintTags(Controls);
+            macroService.PrintMacros(Controls);
         }
 
         private void MacroEventListener(object sender, MacroEventArgs e)
@@ -70,7 +80,7 @@ namespace AndPerTagCore.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            HideWindow();
+            // HideWindow();
         }
     }
 }
