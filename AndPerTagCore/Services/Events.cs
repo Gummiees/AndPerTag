@@ -67,9 +67,6 @@ namespace AndPerTag.Services
             else if (e.Alt && e.KeyCode == WindowsHook.Keys.D3 && pressedAndpersand && !string.IsNullOrWhiteSpace(macroName))
             {
                 SetMacro();
-                // Reset the macroName.
-                macroName = null;
-                pressedAndpersand = false;
             }
             // If the key number is between 'A' and 'Z', it belongs to the tag name.
             // TODO: The program should also accept numbers on the macro names.
@@ -93,9 +90,12 @@ namespace AndPerTag.Services
             };
             if (macro != null)
             {
-                CopyAndPasteMacro(macro, args)
+                CopyAndPasteMacro(macro, args);
             }
             macroEventHandler?.Invoke(null, args);
+            // Reset the macroName.
+            macroName = null;
+            pressedAndpersand = false;
         }
 
         /// <summary>
