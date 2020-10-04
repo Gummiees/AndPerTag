@@ -66,28 +66,7 @@ namespace AndPerTag.Services
             // If it's '#' and '&' has been pressed before, the used has written the name of a macro.
             else if (e.Alt && e.KeyCode == WindowsHook.Keys.D3 && pressedAndpersand && !string.IsNullOrWhiteSpace(macroName))
             {
-                Macro macro = GetMacro();
-                // Emits the event with the user search and if it has been found.
-                MacroEventArgs args = new MacroEventArgs()
-                {
-                    UserText = macroName,
-                    Found = false
-                };
-                if (macro != null)
-                {
-                    // Saves the current clipboard
-                    var clipboard = Clipboard.GetText();
-                    // Copies the text to the clipboard
-                    Clipboard.SetText(macro.Text);
-                    // Performs a manual paste of the clipboard
-                    System.Threading.Thread.Sleep(500);
-                    SendKeys.Send(ctrlV);
-                    // Restores the clipboard
-                    Clipboard.SetText(clipboard);
-                    args.Found = true;
-                }
-                macroEventHandler?.Invoke(null, args);
-
+                SetMacro();
                 // Reset the macroName.
                 macroName = null;
                 pressedAndpersand = false;
@@ -99,6 +78,45 @@ namespace AndPerTag.Services
                 macroName += (char)e.KeyData;
             }
         }
+
+        /// <summary>
+        /// Sets up a macro to the clipboard and pastes it wherever the user is.
+        /// </summary>
+        private void SetMacro()
+        {
+            Macro macro = GetMacro();
+            // Emits the event with the user search and if it has been found.
+            MacroEventArgs args = new MacroEventArgs()
+            {
+                UserText = macroName,
+                Found = false
+            };
+            if (macro != null)
+            {
+                CopyAndPasteMacro(macro, args)
+            }
+            macroEventHandler?.Invoke(null, args);
+        }
+
+        /// <summary>
+        /// Copies and pastes the given macro.
+        /// </summary>
+        /// <param name="macro"></param>
+        /// <param name="args"></param>
+        private void CopyAndPasteMacro(Macro macro, MacroEventArgs args)
+        {
+            // Saves the current clipboard
+            string clipboard = Clipboard.GetText();
+            // Copies the text to the clipboard
+            Clipboard.SetText(macro.Text);
+            // Performs a manual paste of the clipboard
+            System.Threading.Thread.Sleep(500);
+            SendKeys.Send(ctrlV);
+            // Restores the clipboard
+            Clipboard.SetText(clipboard);
+            args.Found = true;
+        }
+
 
         /// <summary>
         /// Returns the macro found with the given name on macroName.
