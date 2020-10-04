@@ -1,7 +1,10 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Models;
 using AndPerTag.Utilities;
+using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using WindowsHook;
 
@@ -72,10 +75,15 @@ namespace AndPerTag.Services
                 };
                 if (macro != null)
                 {
+                    // Saves the current clipboard
+                    var clipboard = Clipboard.GetText();
                     // Copies the text to the clipboard
-                    Clipboard.SetDataObject(macro.Text);
-                    // FIXME: Performs a manual paste of the clipboard
-                    // SendKeys.SendWait(ctrlV);
+                    Clipboard.SetText(macro.Text);
+                    // Performs a manual paste of the clipboard
+                    System.Threading.Thread.Sleep(500);
+                    SendKeys.Send(ctrlV);
+                    // Restores the clipboard
+                    Clipboard.SetText(clipboard);
                     args.Found = true;
                 }
                 macroEventHandler?.Invoke(null, args);

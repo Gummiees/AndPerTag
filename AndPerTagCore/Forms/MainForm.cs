@@ -18,11 +18,7 @@ namespace AndPerTagCore.Forms
 
         private void MacroEventListener(object sender, MacroEventArgs e)
         {
-            if (e.Found)
-            {
-                ShowBalloonTip($"Macro '{e.UserText}' found and copied to the clipboard");
-            }
-            else
+            if (!e.Found)
             {
                 ShowBalloonTip($"Macro '{e.UserText}' was not found", ToolTipIcon.Warning);
             }
@@ -37,9 +33,7 @@ namespace AndPerTagCore.Forms
             base.OnResize(e);
             if (this.WindowState == FormWindowState.Minimized)
             {
-                this.ShowInTaskbar = false;
-                ShowBalloonTip("AndPerTag is still working");
-                this.Hide();
+                HideWindow();
             }
         }
 
@@ -67,12 +61,16 @@ namespace AndPerTagCore.Forms
             this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Normal;
         }
+        private void HideWindow()
+        {
+            Hide();
+            this.ShowInTaskbar = false;
+            ShowBalloonTip("AndPerTag is working on background");
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Show();
-            this.ShowInTaskbar = true;
-            this.WindowState = FormWindowState.Normal;
+            HideWindow();
         }
     }
 }
