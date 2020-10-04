@@ -79,6 +79,10 @@ namespace AndPerTag.Services
                     args.Found = true;
                 }
                 macroEventHandler?.Invoke(null, args);
+
+                // Reset the macroName.
+                macroName = null;
+                pressedAndpersand = false;
             }
             // If the key number is between 'A' and 'Z', it belongs to the tag name.
             // TODO: The program should also accept numbers on the macro names.
@@ -96,7 +100,6 @@ namespace AndPerTag.Services
         {
             if (pressedAndpersand && !string.IsNullOrWhiteSpace(macroName))
             {
-                pressedAndpersand = false;
                 AllTags allTags = JSONUtilities.Read();
                 foreach (Tag tag in allTags.Tags)
                 {

@@ -48,10 +48,10 @@ namespace AndPerTagCore.Forms
         /// </summary>
         /// <param name="title"></param>
         /// <param name="icon"></param>
-        private void ShowBalloonTip(string title, ToolTipIcon? icon = null)
+        private void ShowBalloonTip(string text, ToolTipIcon? icon = null)
         {
-            notifyIcon.BalloonTipTitle = title;
-            notifyIcon.BalloonTipText = "Balloon Tip Text.";
+            notifyIcon.BalloonTipTitle = "AndPerTags - Macro";
+            notifyIcon.BalloonTipText = text;
             notifyIcon.BalloonTipIcon = icon ?? ToolTipIcon.Info;
             notifyIcon.ShowBalloonTip(10000);
         }
