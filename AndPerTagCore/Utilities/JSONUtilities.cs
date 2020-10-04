@@ -8,8 +8,10 @@ namespace AndPerTag.Utilities
     public static class JSONUtilities
     {
         #region CONSTANTS
+
         private const string pathJSONFile = "Assets\\JSON\\data.json";
-        #endregion
+
+        #endregion CONSTANTS
 
         /// <summary>
         /// Rewrites the whole file with the text assigned to it.
@@ -24,6 +26,7 @@ namespace AndPerTag.Utilities
                 serializer.Serialize(file, tags);
             }
         }
+
         /// <summary>
         /// Reads the JSON file and returns it as a list of tags.
         /// </summary>

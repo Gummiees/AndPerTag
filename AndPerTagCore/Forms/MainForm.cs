@@ -71,6 +71,7 @@ namespace AndPerTagCore.Forms
             this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Normal;
         }
+
         private void HideWindow()
         {
             Hide();

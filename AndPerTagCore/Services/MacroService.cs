@@ -7,15 +7,17 @@ namespace AndPerTagCore.Services
 {
     public class MacroService
     {
-        TagsService tagService;
+        private TagsService tagService;
 
         #region CONSTANTS
+
         private const int leftMargin = 425;
         private const int initialTopMargin = 30;
         private const int topMargin = 50;
         private const int buttonWidth = 350;
         private const int buttonHeight = 40;
-        #endregion
+
+        #endregion CONSTANTS
 
         public MacroService(TagsService tagService)
         {

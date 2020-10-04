@@ -11,12 +11,14 @@ namespace AndPerTagCore.Services
         public AllTags AllTags { get; set; }
 
         #region CONSTANTS
+
         private const int leftMargin = 25;
         private const int initialTopMargin = 30;
         private const int topMargin = 50;
         private const int buttonWidth = 285;
         private const int buttonHeight = 40;
-        #endregion
+
+        #endregion CONSTANTS
 
         /// <summary>
         /// Gets all tags from the JSON file.

@@ -10,18 +10,24 @@ namespace AndPerTag.Services
     public class GlobalKeyEvents
     {
         #region GLOBAL VARIABLES
+
         private IKeyboardMouseEvents m_GlobalHook;
         private bool pressedAndpersand = false;
         private string macroName;
-        #endregion
+
+        #endregion GLOBAL VARIABLES
 
         #region EVENTS
+
         public event MacroEventHandler macroEventHandler;
-        #endregion
+
+        #endregion EVENTS
 
         #region CONSTANTS
+
         private const string ctrlV = "^v";
-        #endregion
+
+        #endregion CONSTANTS
 
         public void Main_Closing(object sender, CancelEventArgs e)
         {
@@ -113,7 +119,6 @@ namespace AndPerTag.Services
             Clipboard.SetText(clipboard);
             args.Found = true;
         }
-
 
         /// <summary>
         /// Returns the macro found with the given name on macroName.
