@@ -83,5 +83,12 @@ namespace AndPerTagCore.Forms
         {
             // HideWindow();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            // TODO: Create About window.
+            AboutForm aboutForm = new AboutForm();
+            aboutForm.Show();
+        }
     }
 }
