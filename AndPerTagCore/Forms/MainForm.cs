@@ -1,7 +1,9 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Services;
 using AndPerTagCore.Services;
+using AndPerTagCore.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace AndPerTagCore.Forms
@@ -24,6 +26,9 @@ namespace AndPerTagCore.Forms
 
             tagsService.PrintTags(Controls);
             macroService.PrintMacros(Controls);
+            macroService.refreshMacrosHandler += RemoveMacrosEvent;
+            tagsService.refreshTagsHandler += RemoveTagsEvent;
+
         }
 
         private void MacroEventListener(object sender, MacroEventArgs e)
@@ -31,6 +36,57 @@ namespace AndPerTagCore.Forms
             if (!e.Found)
             {
                 ShowBalloonTip($"Macro '{e.UserText}' was not found", ToolTipIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Remove all the buttons from the screen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveMacrosEvent(object sender, EventArgs e)
+        {
+            RemoveButtons(false);
+            macroService.PrintMacros(Controls);
+        }
+
+        /// <summary>
+        /// Remove all the buttons from the screen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveTagsEvent(object sender, EventArgs e)
+        {
+            RemoveButtons(true);
+            tagsService.PrintTags(Controls);
+            macroService.PrintMacros(Controls);
+        }
+
+        /// <summary>
+        /// Remove all the buttons from the screen. Can be done only to macros.
+        /// </summary>
+        /// <param name="removeTags"></param>
+        private void RemoveButtons(bool removeTags)
+        {
+            List<string> removableControls = new List<string>();
+            foreach (Control control in Controls)
+            {
+                if (control.Tag != null)
+                {
+                    if (control.Tag.ToString().Equals(GlobalConstants.removableTagMacro))
+                    {
+                        removableControls.Add(control.Name);
+                    }
+                    else if (removeTags && control.Tag.ToString().Equals(GlobalConstants.removableTag))
+                    {
+                        removableControls.Add(control.Name);
+                    }
+                }
+            }
+
+            foreach (string controlName in removableControls)
+            {
+                Controls.RemoveByKey(controlName);
             }
         }
 
@@ -89,6 +145,24 @@ namespace AndPerTagCore.Forms
             // TODO: Create About window.
             AboutForm aboutForm = new AboutForm();
             aboutForm.Show();
+        }
+
+        /// <summary>
+        /// Confirmation before deleting a tag.
+        /// </summary>
+        /// <param name="tagName"></param>
+        private void ConfirmDeleteTag(string tagName)
+        {
+            var confirmResult = MessageBox.Show(
+                    "Are you sure to delete this tag?",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo
+                );
+
+            if (confirmResult == DialogResult.Yes)
+            {
+                tagsService.RemoveTag(tagName);
+            }
         }
     }
 }

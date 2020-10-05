@@ -50,7 +50,7 @@
             // 
             this.tagsLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tagsLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tagsLabel.Location = new System.Drawing.Point(2, 28);
+            this.tagsLabel.Location = new System.Drawing.Point(-9, 41);
             this.tagsLabel.Name = "tagsLabel";
             this.tagsLabel.Size = new System.Drawing.Size(400, 53);
             this.tagsLabel.TabIndex = 0;
@@ -61,7 +61,7 @@
             // 
             this.macrosLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.macrosLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.macrosLabel.Location = new System.Drawing.Point(426, 28);
+            this.macrosLabel.Location = new System.Drawing.Point(412, 41);
             this.macrosLabel.Name = "macrosLabel";
             this.macrosLabel.Size = new System.Drawing.Size(400, 53);
             this.macrosLabel.TabIndex = 0;

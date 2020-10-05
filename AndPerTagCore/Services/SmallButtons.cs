@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.Control;
 
 namespace AndPerTagCore.Services
 {
     public static class SmallButtons
     {
         #region CONSTANTS
-
-        public const string pathDeleteIcon = "Assets\\Images\\delete.png";
-        public const string pathEditIcon = "Assets\\Images\\edit.png";
+        private const string pathDeleteIcon = "Assets\\Images\\delete.png";
+        private const string pathEditIcon = "Assets\\Images\\edit.png";
 
         private const string deleteColor = "#ff3e30";
         private const string editColor = "#7afffb";
@@ -19,35 +17,32 @@ namespace AndPerTagCore.Services
         #endregion CONSTANTS
 
         /// <summary>
-        /// Prints a small button with the edit aspect.
+        /// Generates a small button with the edit aspect.
         /// </summary>
         /// <param name="top"></param>
         /// <param name="left"></param>
-        /// <param name="controls"></param>
-        public static void PrintEditButton(int top, int left, ControlCollection controls)
+        public static Button GetEditButton(string name, string tag, int top, int left)
         {
-            PrintSmallButton(true, top, left, controls);
+            return GetSmallButton(true, name, tag, top, left);
         }
 
         /// <summary>
-        /// Prints a small button with the delete aspect.
+        /// Generates a small button with the delete aspect.
         /// </summary>
         /// <param name="top"></param>
         /// <param name="left"></param>
-        /// <param name="controls"></param>
-        public static void PrintDeleteButton(int top, int left, ControlCollection controls)
+        public static Button GetDeleteButton(string name, string tag, int top, int left)
         {
-            PrintSmallButton(false, top, left + smallButtonSize, controls);
+            return GetSmallButton(false, name, tag, top, left + smallButtonSize);
         }
 
         /// <summary>
-        /// Prints a small button.
+        /// Generates a small button.
         /// </summary>
         /// <param name="isEdit"></param>
         /// <param name="top"></param>
         /// <param name="left"></param>
-        /// <param name="controls"></param>
-        public static void PrintSmallButton(bool isEdit, int top, int left, ControlCollection controls)
+        private static Button GetSmallButton(bool isEdit, string name, string tag, int top, int left)
         {
             string iconPath = isEdit ? pathEditIcon : pathDeleteIcon;
             iconPath = $"{AppDomain.CurrentDomain.BaseDirectory}{iconPath}";
@@ -55,6 +50,8 @@ namespace AndPerTagCore.Services
             {
                 Top = top,
                 Left = left,
+                Name = name,
+                Tag = tag,
                 BackColor = isEdit ? ColorTranslator.FromHtml(editColor) : ColorTranslator.FromHtml(deleteColor),
                 Size = new Size(smallButtonSize, smallButtonSize),
                 FlatStyle = FlatStyle.Flat,
@@ -63,7 +60,7 @@ namespace AndPerTagCore.Services
             };
             button.FlatAppearance.BorderSize = 1;
             button.FlatAppearance.BorderColor = Color.Black;
-            controls.Add(button);
+            return button;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace AndPerTag.Utilities
         public static void Write(AllTags tags)
         {
             // serialize JSON directly to a file. Overwrites the file.
-            using (StreamWriter file = new StreamWriter($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}"))
+            using (StreamWriter file = new StreamWriter($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}", false))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, tags);

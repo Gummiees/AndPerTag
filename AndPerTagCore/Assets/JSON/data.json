@@ -23,6 +23,10 @@
           "Text": "This is a testing Macro."
         },
         {
+          "Name": "delete",
+          "Text": "This is a macro I want to delete."
+        },
+        {
           "Name": "examples",
           "Text": "This is an other testing Macro."
         }
