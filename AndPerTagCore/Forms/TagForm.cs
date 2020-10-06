@@ -9,12 +9,16 @@ namespace AndPerTagCore.Forms
     public partial class TagForm : Form
     {
         #region GLOBAL VARIABLES
+
         public Tag originalTag;
-        #endregion
+
+        #endregion GLOBAL VARIABLES
 
         #region EVENTS
+
         public event EventHandler acceptEventHandler;
-        #endregion
+
+        #endregion EVENTS
 
         public TagForm()
         {

@@ -14,13 +14,11 @@ namespace AndPerTagCore.Services
     {
         public AllTags AllTags { get; set; }
 
-        #region CONSTANTS
-
-        #endregion CONSTANTS
-
         #region EVENTS
+
         public event EventHandler refreshTagsHandler;
-        #endregion
+
+        #endregion EVENTS
 
         /// <summary>
         /// Gets all tags from the JSON file.

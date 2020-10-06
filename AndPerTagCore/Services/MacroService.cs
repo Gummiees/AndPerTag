@@ -13,8 +13,10 @@ namespace AndPerTagCore.Services
         private readonly TagsService tagService;
 
         #region EVENTS
+
         public event EventHandler RefreshMacrosHandler;
-        #endregion
+
+        #endregion EVENTS
 
         public MacroService(TagsService tagService)
         {

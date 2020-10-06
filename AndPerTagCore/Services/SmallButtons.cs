@@ -7,6 +7,7 @@ namespace AndPerTagCore.Services
     public static class SmallButtons
     {
         #region CONSTANTS
+
         private const string pathDeleteIcon = "Assets\\Images\\delete.png";
         private const string pathEditIcon = "Assets\\Images\\edit.png";
 

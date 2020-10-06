@@ -28,7 +28,6 @@ namespace AndPerTagCore.Forms
             macroService.PrintMacros(splitContainer.Panel2.Controls);
             macroService.RefreshMacrosHandler += RemoveMacrosEvent;
             tagsService.refreshTagsHandler += RemoveTagsEvent;
-
         }
 
         private void MacroEventListener(object sender, MacroEventArgs e)
@@ -188,7 +187,6 @@ namespace AndPerTagCore.Forms
 
         private void addMacroButton_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

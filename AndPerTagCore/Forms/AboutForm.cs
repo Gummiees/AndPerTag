@@ -5,6 +5,7 @@ namespace AndPerTagCore.Forms
     public partial class AboutForm : Form
     {
         private readonly WebBrowser webBrowser = new WebBrowser();
+
         public AboutForm()
         {
             InitializeComponent();
