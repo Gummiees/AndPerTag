@@ -1,4 +1,5 @@
 ﻿using AndPerTag.Models;
+using AndPerTagCore.Models;
 using AndPerTagCore.Models.Events;
 using AndPerTagCore.Utilities;
 using System;
@@ -6,11 +7,11 @@ using System.Windows.Forms;
 
 namespace AndPerTagCore.Forms
 {
-    public partial class TagForm : Form
+    public partial class MacroForm : Form
     {
         #region GLOBAL VARIABLES
 
-        public Tag originalTag;
+        public Macro originalMacro;
 
         #endregion GLOBAL VARIABLES
 
@@ -20,32 +21,32 @@ namespace AndPerTagCore.Forms
 
         #endregion EVENTS
 
-        public TagForm()
+        public MacroForm()
         {
             InitializeComponent();
-        }
-
-        private void colorButton_Click(object sender, EventArgs e)
-        {
-            if (colorDialog.ShowDialog() == DialogResult.OK)
-            {
-                colorButton.BackColor = colorDialog.Color;
-            }
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
         {
             // Only send event if name and color are filled.
-            if (!string.IsNullOrWhiteSpace(nameTextBox.Text) && colorDialog.Color != null)
+            if (
+                !string.IsNullOrWhiteSpace(nameTextBox.Text) &&
+                !string.IsNullOrWhiteSpace(textTextBox.Text) &&
+                tagComboBox.SelectedItem != null &&
+                tagComboBox.SelectedItem is Tag tag
+            )
             {
-                EditTagEvent editTagEvent = new EditTagEvent()
+                EditMacroEvent editTagEvent = new EditMacroEvent()
                 {
-                    Original = originalTag,
-                    Created = new Tag()
+                    Original = originalMacro,
+                    Created = new EditMacro()
                     {
-                        Name = nameTextBox.Text,
-                        Color = $"#{colorDialog.Color.ToArgb() & 0x00FFFFFF:X6}",
-                        Macros = originalTag?.Macros
+                        Macro = new Macro()
+                        {
+                            Name = nameTextBox.Text,
+                            Text = textTextBox.Text
+                        },
+                        Tag = tag
                     }
                 };
 
@@ -58,7 +59,7 @@ namespace AndPerTagCore.Forms
             }
         }
 
-        private void TagForm_Load(object sender, EventArgs e)
+        private void MacroForm_Load(object sender, EventArgs e)
         {
         }
     }

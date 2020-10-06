@@ -117,6 +117,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "nameLabel";
             this.Text = "AndPerTag";
+            this.Load += new System.EventHandler(this.TagForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

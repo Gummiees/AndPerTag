@@ -4,6 +4,7 @@ using AndPerTagCore.Forms;
 using AndPerTagCore.Models.Events;
 using AndPerTagCore.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using static System.Windows.Forms.Control;
@@ -12,7 +13,7 @@ namespace AndPerTagCore.Services
 {
     public class TagsService
     {
-        public AllTags AllTags { get; set; }
+        public AllTags AllTags { get; private set; }
 
         #region EVENTS
 
@@ -45,44 +46,47 @@ namespace AndPerTagCore.Services
             ReadTags();
             int i = 1;
             int top;
-            foreach (Tag tag in AllTags.Tags)
+            if (AllTags.Tags != null)
             {
-                top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
-                Button button = new Button
+                foreach (Tag tag in AllTags.Tags)
                 {
-                    Top = top,
-                    Left = GlobalConstants.buttonLeft,
-                    Text = tag.Name,
-                    Name = tag.Name,
-                    Tag = GlobalConstants.removableTag,
-                    BackColor = ColorTranslator.FromHtml(tag.Color),
-                    Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    FlatStyle = FlatStyle.Flat
-                };
-                button.FlatAppearance.BorderSize = 1;
-                button.FlatAppearance.BorderColor = Color.Black;
-                controls.Add(button);
+                    top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
+                    Button button = new Button
+                    {
+                        Top = top,
+                        Left = GlobalConstants.buttonLeft,
+                        Text = tag.Name,
+                        Name = tag.Name,
+                        Tag = GlobalConstants.removableTag,
+                        BackColor = ColorTranslator.FromHtml(tag.Color),
+                        Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        FlatStyle = FlatStyle.Flat
+                    };
+                    button.FlatAppearance.BorderSize = 1;
+                    button.FlatAppearance.BorderColor = Color.Black;
+                    controls.Add(button);
 
-                Button editButton = SmallButtons.GetEditButton(
-                    tag.Name,
-                    GlobalConstants.removableTag,
-                    top,
-                    GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
-                );
-                editButton.Click += new EventHandler(EditTagEvent);
-                controls.Add(editButton);
+                    Button editButton = SmallButtons.GetEditButton(
+                        tag.Name,
+                        GlobalConstants.removableTag,
+                        top,
+                        GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                    );
+                    editButton.Click += new EventHandler(EditTagEvent);
+                    controls.Add(editButton);
 
-                Button deleteButton = SmallButtons.GetDeleteButton(
-                    tag.Name,
-                    GlobalConstants.removableTag,
-                    top,
-                    GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
-                );
-                deleteButton.Click += new EventHandler(RemoveTagEvent);
-                controls.Add(deleteButton);
+                    Button deleteButton = SmallButtons.GetDeleteButton(
+                        tag.Name,
+                        GlobalConstants.removableTag,
+                        top,
+                        GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                    );
+                    deleteButton.Click += new EventHandler(RemoveTagEvent);
+                    controls.Add(deleteButton);
 
-                i++;
+                    i++;
+                }
             }
         }
 
@@ -91,13 +95,16 @@ namespace AndPerTagCore.Services
         /// </summary>
         /// <param name="tagName"></param>
         /// <returns></returns>
-        public Tag GetTag(string tagName)
+        private Tag GetTag(string tagName)
         {
-            foreach (Tag tag in AllTags.Tags)
+            if (AllTags.Tags != null)
             {
-                if (tag.Name.Equals(tagName))
+                foreach (Tag tag in AllTags.Tags)
                 {
-                    return tag;
+                    if (tag.Name.Equals(tagName))
+                    {
+                        return tag;
+                    }
                 }
             }
 
@@ -109,10 +116,14 @@ namespace AndPerTagCore.Services
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="save"></param>
-        public void CreateTag(Tag tag, bool save = true)
+        private void CreateTag(Tag tag, bool save = true)
         {
             if (GetTag(tag.Name) == null)
             {
+                if (AllTags.Tags == null)
+                {
+                    AllTags.Tags = new List<Tag>();
+                }
                 AllTags.Tags.Add(tag);
 
                 if (save)
@@ -132,7 +143,7 @@ namespace AndPerTagCore.Services
         /// </summary>
         public void CreateTagEvent()
         {
-            Forms.TagForm tagForm = new Forms.TagForm();
+            TagForm tagForm = new TagForm();
             tagForm.tagLabel.Text = createTagText;
             tagForm.acceptEventHandler += AcceptCreateTagEvent;
             tagForm.Show();
@@ -145,9 +156,9 @@ namespace AndPerTagCore.Services
         /// <param name="e"></param>
         private void AcceptCreateTagEvent(object sender, EventArgs e)
         {
-            if (sender is EditEvent<Tag> editTagEvent)
+            if (sender is EditTagEvent editTagEvent)
             {
-                CreateTag(editTagEvent.created);
+                CreateTag(editTagEvent.Created);
             }
         }
 
@@ -155,7 +166,7 @@ namespace AndPerTagCore.Services
         /// Removes the indicated tag.
         /// </summary>
         /// <param name="tag"></param>
-        public void RemoveTag(Tag tag, bool save = true)
+        private void RemoveTag(Tag tag, bool save = true)
         {
             if (tag == null)
             {
@@ -206,7 +217,7 @@ namespace AndPerTagCore.Services
         /// <param name="originalTag"></param>
         /// <param name="tag"></param>
         /// <param name="save"></param>
-        public void EditTag(Tag originalTag, Tag tag, bool save = true)
+        private void EditTag(Tag originalTag, Tag tag, bool save = true)
         {
             RemoveTag(originalTag, false);
             CreateTag(tag, false);
@@ -228,12 +239,12 @@ namespace AndPerTagCore.Services
             if (sender is Button button)
             {
                 Tag tag = GetTag(button.Name);
-                Forms.TagForm tagForm = new Forms.TagForm
+                TagForm tagForm = new TagForm
                 {
-                    originalTag = tag,
+                    originalTag = tag
                 };
-                tagForm.nameTextBox.Text = tag.Name;
                 tagForm.tagLabel.Text = editTagText;
+                tagForm.nameTextBox.Text = tag.Name;
                 tagForm.colorButton.BackColor = ColorTranslator.FromHtml(tag.Color);
                 tagForm.colorDialog.Color = ColorTranslator.FromHtml(tag.Color);
 
@@ -249,10 +260,37 @@ namespace AndPerTagCore.Services
         /// <param name="e"></param>
         private void AcceptEditTagEvent(object sender, EventArgs e)
         {
-            if (sender is EditEvent<Tag> editTagEvent)
+            if (sender is EditTagEvent editTagEvent)
             {
-                EditTag(editTagEvent.original, editTagEvent.created);
+                EditTag(editTagEvent.Original, editTagEvent.Created);
             }
+        }
+
+        /// <summary>
+        /// Gets the tag where the macro belongs to.
+        /// </summary>
+        /// <param name="macroName"></param>
+        /// <returns></returns>
+        internal Tag GetTagByMacro(string macroName)
+        {
+            if (AllTags.Tags != null)
+            {
+                foreach (Tag tag in AllTags.Tags)
+                {
+                    if (tag.Macros != null)
+                    {
+                        foreach (Macro macro in tag.Macros)
+                        {
+                            if (macro.Name.Equals(macroName))
+                            {
+                                return tag;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

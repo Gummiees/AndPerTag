@@ -1,8 +1,12 @@
 ﻿using AndPerTag.Models;
 using AndPerTag.Utilities;
+using AndPerTagCore.Forms;
+using AndPerTagCore.Models.Events;
 using AndPerTagCore.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using static System.Windows.Forms.Control;
 
@@ -10,13 +14,19 @@ namespace AndPerTagCore.Services
 {
     public class MacroService
     {
-        private readonly TagsService tagService;
-
         #region EVENTS
 
         public event EventHandler RefreshMacrosHandler;
 
         #endregion EVENTS
+
+        #region CONSTANTS
+
+        private readonly TagsService tagService;
+        private const string createMacroText = "Create new macro";
+        private const string editMacroText = "Edit macro";
+
+        #endregion CONSTANTS
 
         public MacroService(TagsService tagService)
         {
@@ -30,47 +40,51 @@ namespace AndPerTagCore.Services
         {
             int i = 1;
             int top;
-            foreach (Tag tag in tagService.AllTags.Tags)
+            if (tagService.AllTags.Tags != null)
             {
-                if (tag.Macros != null)
+                foreach (Tag tag in tagService.AllTags.Tags)
                 {
-                    foreach (Macro macro in tag.Macros)
+                    if (tag.Macros != null)
                     {
-                        top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
-                        Button button = new Button
+                        foreach (Macro macro in tag.Macros)
                         {
-                            Top = top,
-                            Left = GlobalConstants.buttonLeft,
-                            Text = $"{macro.Name} ({tag.Name})",
-                            Name = macro.Name,
-                            Tag = GlobalConstants.removableTagMacro,
-                            BackColor = ColorTranslator.FromHtml(tag.Color),
-                            Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
-                            TextAlign = ContentAlignment.MiddleLeft,
-                            FlatStyle = FlatStyle.Flat
-                        };
-                        button.FlatAppearance.BorderSize = 1;
-                        button.FlatAppearance.BorderColor = Color.Black;
+                            top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
+                            Button button = new Button
+                            {
+                                Top = top,
+                                Left = GlobalConstants.buttonLeft,
+                                Text = $"{macro.Name} ({tag.Name})",
+                                Name = macro.Name,
+                                Tag = GlobalConstants.removableTagMacro,
+                                BackColor = ColorTranslator.FromHtml(tag.Color),
+                                Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
+                                TextAlign = ContentAlignment.MiddleLeft,
+                                FlatStyle = FlatStyle.Flat
+                            };
+                            button.FlatAppearance.BorderSize = 1;
+                            button.FlatAppearance.BorderColor = Color.Black;
 
-                        Button editButton = SmallButtons.GetEditButton(
-                            macro.Name,
-                            GlobalConstants.removableTagMacro,
-                            top,
-                            GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
-                        );
-                        controls.Add(editButton);
+                            Button editButton = SmallButtons.GetEditButton(
+                                macro.Name,
+                                GlobalConstants.removableTagMacro,
+                                top,
+                                GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                            );
+                            editButton.Click += new EventHandler(EditMacroEvent);
+                            controls.Add(editButton);
 
-                        Button deleteButton = SmallButtons.GetDeleteButton(
-                            macro.Name,
-                            GlobalConstants.removableTagMacro,
-                            top,
-                            GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
-                        );
-                        deleteButton.Click += new EventHandler(RemoveMacroEvent);
-                        controls.Add(deleteButton);
+                            Button deleteButton = SmallButtons.GetDeleteButton(
+                                macro.Name,
+                                GlobalConstants.removableTagMacro,
+                                top,
+                                GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                            );
+                            deleteButton.Click += new EventHandler(RemoveMacroEvent);
+                            controls.Add(deleteButton);
 
-                        controls.Add(button);
-                        i++;
+                            controls.Add(button);
+                            i++;
+                        }
                     }
                 }
             }
@@ -82,7 +96,7 @@ namespace AndPerTagCore.Services
         /// <param name="tag"></param>
         /// <param name="macroName"></param>
         /// <returns></returns>
-        public Macro GetMacro(Tag tag, string macroName)
+        private Macro GetMacro(Tag tag, string macroName)
         {
             if (tag.Macros != null)
             {
@@ -104,13 +118,13 @@ namespace AndPerTagCore.Services
         /// <param name="tagName"></param>
         /// <param name="macroName"></param>
         /// <returns></returns>
-        public Macro GetMacro(string tagName, string macroName)
+        private Macro GetMacro(string tagName, string macroName)
         {
-            foreach (Tag tag in tagService.AllTags.Tags)
+            if (tagService.AllTags.Tags != null)
             {
-                if (tag.Name.Equals(tagName))
+                foreach (Tag tag in tagService.AllTags.Tags)
                 {
-                    if (tag.Macros != null)
+                    if (tag.Name.Equals(tagName) && tag.Macros != null)
                     {
                         foreach (Macro macro in tag.Macros)
                         {
@@ -131,14 +145,17 @@ namespace AndPerTagCore.Services
         /// </summary>
         /// <param name="macroName"></param>
         /// <returns></returns>
-        public Macro GetMacro(string macroName)
+        private Macro GetMacro(string macroName)
         {
-            foreach (Tag tag in tagService.AllTags.Tags)
+            if (tagService.AllTags.Tags != null)
             {
-                Macro macro = GetMacro(tag, macroName);
-                if (macro != null)
+                foreach (Tag tag in tagService.AllTags.Tags)
                 {
-                    return macro;
+                    Macro macro = GetMacro(tag, macroName);
+                    if (macro != null)
+                    {
+                        return macro;
+                    }
                 }
             }
 
@@ -151,16 +168,31 @@ namespace AndPerTagCore.Services
         /// <param name="tagName"></param>
         /// <param name="macro"></param>
         /// <param name="save"></param>
-        public void CreateMacro(string tagName, Macro macro, bool save = true)
+        private void CreateMacro(string tagName, Macro macro, bool save = true)
         {
-            if (GetMacro(tagName, macro.Name) == null)
+            if (GetMacro(tagName, macro.Name) != null)
             {
-                foreach (Tag tag in tagService.AllTags.Tags)
+                Messages.ShowWarningMessage($"The macro '{macro.Name}' already exists", "Already exists");
+            }
+            else if (tagService.AllTags.Tags == null)
+            {
+                Messages.ShowWarningMessage($"The tag '{tagName}' was not found", "Tag not found");
+            }
+            else
+            {
+                if (tagService.AllTags.Tags != null)
                 {
-                    if (tag.Name.Equals(tagName))
+                    foreach (Tag tag in tagService.AllTags.Tags)
                     {
-                        tag.Macros.Add(macro);
-                        break;
+                        if (tag.Name.Equals(tagName))
+                        {
+                            if (tag.Macros == null)
+                            {
+                                tag.Macros = new List<Macro>();
+                            }
+                            tag.Macros.Add(macro);
+                            break;
+                        }
                     }
                 }
 
@@ -170,9 +202,39 @@ namespace AndPerTagCore.Services
                     RefreshMacrosHandler?.Invoke(null, null);
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Removes the indicated macro.
+        /// </summary>
+        /// <param name="macro"></param>
+        private void RemoveMacro(Macro macro, bool save = true)
+        {
+            if (macro != null && tagService.AllTags.Tags != null)
             {
-                Messages.ShowWarningMessage($"The macro '{macro.Name}' already exists", "Already exists");
+                foreach (Tag tag in tagService.AllTags.Tags)
+                {
+                    if (tag.Macros.Any(m => m.Equals(macro)))
+                    {
+                        tag.Macros.Remove(macro);
+                        break;
+                    }
+                }
+            }
+
+            if (macro == null)
+            {
+                Messages.ShowWarningMessage($"The macro '{macro.Name}' was not found", "Not found");
+            }
+            else if (tagService.AllTags.Tags == null)
+            {
+                Messages.ShowWarningMessage($"The tag from the macro '{macro}' was not found", "Tag not found");
+            }
+
+            if (save)
+            {
+                JSONUtilities.Write(tagService.AllTags);
+                RefreshMacrosHandler?.Invoke(macro.Name, null);
             }
         }
 
@@ -182,27 +244,8 @@ namespace AndPerTagCore.Services
         /// <param name="macroName"></param>
         private void RemoveMacro(string macroName, bool save = true)
         {
-            Macro macro = null;
-            foreach (Tag tag in tagService.AllTags.Tags)
-            {
-                macro = GetMacro(tag, macroName);
-                if (macro != null)
-                {
-                    tag.Macros.Remove(macro);
-                    break;
-                }
-            }
-
-            if (macro == null)
-            {
-                Messages.ShowWarningMessage($"The macro '{macroName}' was not found", "Not found");
-            }
-
-            if (save)
-            {
-                JSONUtilities.Write(tagService.AllTags);
-                RefreshMacrosHandler?.Invoke(macroName, null);
-            }
+            Macro macro = GetMacro(macroName);
+            RemoveMacro(macro);
         }
 
         /// <summary>
@@ -229,15 +272,59 @@ namespace AndPerTagCore.Services
         /// <param name="tagNameForNewMacro"></param>
         /// <param name="newMacro"></param>
         /// <param name="save"></param>
-        public void EditMacro(string originalMacroName, string tagNameForNewMacro, Macro newMacro, bool save = true)
+        private void EditMacro(Macro originalMacro, string tagNameForNewMacro, Macro newMacro, bool save = true)
         {
-            RemoveMacro(originalMacroName, false);
+            RemoveMacro(originalMacro, false);
             CreateMacro(tagNameForNewMacro, newMacro, false);
 
             if (save)
             {
                 JSONUtilities.Write(tagService.AllTags);
                 RefreshMacrosHandler?.Invoke(null, null);
+            }
+        }
+
+        /// <summary>
+        /// Handles the click event on the edit button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditMacroEvent(object sender, EventArgs e)
+        {
+            if (tagService.AllTags.Tags == null)
+            {
+                Messages.ShowWarningMessage($"To create a macro you first need to have at least one tag", "No tags found");
+            }
+            else if (sender is Button button)
+            {
+                Macro macro = GetMacro(button.Name);
+                MacroForm macroForm = new MacroForm
+                {
+                    originalMacro = macro
+                };
+                macroForm.macroLabel.Text = editMacroText;
+                macroForm.nameTextBox.Text = macro.Name;
+                macroForm.textTextBox.Text = macro.Text;
+                macroForm.tagComboBox.DataSource = tagService.AllTags.Tags;
+                macroForm.tagComboBox.DisplayMember = "Name";
+                macroForm.tagComboBox.ValueMember = "Name";
+                macroForm.tagComboBox.SelectedItem = tagService.GetTagByMacro(macro.Name);
+
+                macroForm.acceptEventHandler += AcceptEditMacroEvent;
+                macroForm.Show();
+            }
+        }
+
+        /// <summary>
+        /// Handles the accept button on the edit form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AcceptEditMacroEvent(object sender, EventArgs e)
+        {
+            if (sender is EditMacroEvent editMacroEvent)
+            {
+                EditMacro(editMacroEvent.Original, editMacroEvent.Created.Tag.Name, editMacroEvent.Created.Macro);
             }
         }
     }
