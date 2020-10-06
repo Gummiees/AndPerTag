@@ -1,4 +1,5 @@
 ﻿using AndPerTag.Models;
+using AndPerTagCore.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -19,11 +20,20 @@ namespace AndPerTag.Utilities
         /// <param name="tags"></param>
         public static void Write(AllTags tags)
         {
-            // serialize JSON directly to a file. Overwrites the file.
-            using (StreamWriter file = new StreamWriter($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}", false))
+            try
             {
+                // serialize JSON directly to a file. Overwrites the file.
+                using StreamWriter file = new StreamWriter($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}", false);
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, tags);
+            }
+            catch (IOException)
+            {
+                Messages.ErrorSaving();
+            }
+            catch (JsonException)
+            {
+                Messages.ErrorParsing();
             }
         }
 
@@ -33,14 +43,22 @@ namespace AndPerTag.Utilities
         /// <returns></returns>
         public static AllTags Read()
         {
-            AllTags tags;
-            // deserialize JSON directly from a file
-            using (StreamReader file = File.OpenText($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}"))
+            AllTags tags = null;
+            try
             {
+                // deserialize JSON directly from a file
+                using StreamReader file = File.OpenText($"{AppDomain.CurrentDomain.BaseDirectory}{pathJSONFile}");
                 JsonSerializer serializer = new JsonSerializer();
                 tags = (AllTags)serializer.Deserialize(file, typeof(AllTags));
             }
-
+            catch (IOException)
+            {
+                Messages.ErrorSaving();
+            }
+            catch (JsonException)
+            {
+                Messages.ErrorParsing();
+            }
             return tags;
         }
     }

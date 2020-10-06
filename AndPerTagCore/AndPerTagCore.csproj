@@ -8,11 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Forms\MainForm - Copy.cs" />
+    <Compile Remove="Forms\MainForm - Copy.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Forms\MainForm - Copy.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\Icon\andpertag_logo.ico" />
     <None Remove="Assets\Icon\andpertag_logo.png" />
     <None Remove="Assets\Images\delete.png" />
     <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\Images\github-logo.png" />
+    <None Remove="Assets\Images\OOjs_UI_icon_add.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\Images\github-logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Images\OOjs_UI_icon_add.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

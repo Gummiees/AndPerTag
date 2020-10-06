@@ -52,7 +52,7 @@ namespace AndPerTagCore.Services
                 Left = left,
                 Name = name,
                 Tag = tag,
-                BackColor = isEdit ? ColorTranslator.FromHtml(editColor) : ColorTranslator.FromHtml(deleteColor),
+                BackColor = ColorTranslator.FromHtml(isEdit ? editColor : deleteColor),
                 Size = new Size(smallButtonSize, smallButtonSize),
                 FlatStyle = FlatStyle.Flat,
                 Image = Image.FromFile(iconPath),

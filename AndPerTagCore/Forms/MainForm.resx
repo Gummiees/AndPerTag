@@ -100,6 +100,18 @@
         AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="createTagButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAC1JREFUOE9j
+        GAV0A/+hmGpg1EDSAEwzsZggwKYJHyYLUKQZGxg1cBTQDjAwAAB5dCvVCGq6rwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="addMacroButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAC1JREFUOE9j
+        GAV0A/+hmGpg1EDSAEwzsZggwKYJHyYLUKQZGxg1cBTQDjAwAAB5dCvVCGq6rwAAAABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="$this.Locked" type="System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
     <value>True</value>
   </metadata>

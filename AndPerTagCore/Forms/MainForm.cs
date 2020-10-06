@@ -24,9 +24,9 @@ namespace AndPerTagCore.Forms
 
             macroService = new MacroService(tagsService);
 
-            tagsService.PrintTags(Controls);
-            macroService.PrintMacros(Controls);
-            macroService.refreshMacrosHandler += RemoveMacrosEvent;
+            tagsService.PrintTags(splitContainer.Panel1.Controls);
+            macroService.PrintMacros(splitContainer.Panel2.Controls);
+            macroService.RefreshMacrosHandler += RemoveMacrosEvent;
             tagsService.refreshTagsHandler += RemoveTagsEvent;
 
         }
@@ -46,8 +46,8 @@ namespace AndPerTagCore.Forms
         /// <param name="e"></param>
         private void RemoveMacrosEvent(object sender, EventArgs e)
         {
-            RemoveButtons(false);
-            macroService.PrintMacros(Controls);
+            RemoveMacroButtons();
+            macroService.PrintMacros(splitContainer.Panel2.Controls);
         }
 
         /// <summary>
@@ -57,27 +57,43 @@ namespace AndPerTagCore.Forms
         /// <param name="e"></param>
         private void RemoveTagsEvent(object sender, EventArgs e)
         {
-            RemoveButtons(true);
-            tagsService.PrintTags(Controls);
-            macroService.PrintMacros(Controls);
+            RemoveTagButtons();
+            RemoveMacroButtons();
+            tagsService.PrintTags(splitContainer.Panel1.Controls);
+            macroService.PrintMacros(splitContainer.Panel2.Controls);
         }
 
         /// <summary>
-        /// Remove all the buttons from the screen. Can be done only to macros.
+        /// Remove all the buttons from the tag panel.
         /// </summary>
-        /// <param name="removeTags"></param>
-        private void RemoveButtons(bool removeTags)
+        private void RemoveTagButtons()
         {
             List<string> removableControls = new List<string>();
-            foreach (Control control in Controls)
+            foreach (Control control in splitContainer.Panel1.Controls)
+            {
+                if (control.Tag != null && control.Tag.ToString().Equals(GlobalConstants.removableTag))
+                {
+                    removableControls.Add(control.Name);
+                }
+            }
+
+            foreach (string controlName in removableControls)
+            {
+                splitContainer.Panel1.Controls.RemoveByKey(controlName);
+            }
+        }
+
+        /// <summary>
+        /// Remove all the buttons from the macro panel.
+        /// </summary>
+        private void RemoveMacroButtons()
+        {
+            List<string> removableControls = new List<string>();
+            foreach (Control control in splitContainer.Panel2.Controls)
             {
                 if (control.Tag != null)
                 {
                     if (control.Tag.ToString().Equals(GlobalConstants.removableTagMacro))
-                    {
-                        removableControls.Add(control.Name);
-                    }
-                    else if (removeTags && control.Tag.ToString().Equals(GlobalConstants.removableTag))
                     {
                         removableControls.Add(control.Name);
                     }
@@ -86,7 +102,7 @@ namespace AndPerTagCore.Forms
 
             foreach (string controlName in removableControls)
             {
-                Controls.RemoveByKey(controlName);
+                splitContainer.Panel2.Controls.RemoveByKey(controlName);
             }
         }
 
@@ -163,6 +179,16 @@ namespace AndPerTagCore.Forms
             {
                 tagsService.RemoveTag(tagName);
             }
+        }
+
+        private void createTagButton_Click(object sender, EventArgs e)
+        {
+            tagsService.CreateTagEvent();
+        }
+
+        private void addMacroButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

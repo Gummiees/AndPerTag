@@ -48,14 +48,14 @@
             // 
             this.aboutDescriptionLabel.Location = new System.Drawing.Point(12, 9);
             this.aboutDescriptionLabel.Name = "aboutDescriptionLabel";
-            this.aboutDescriptionLabel.Size = new System.Drawing.Size(560, 82);
+            this.aboutDescriptionLabel.Size = new System.Drawing.Size(600, 82);
             this.aboutDescriptionLabel.TabIndex = 0;
             this.aboutDescriptionLabel.Text = "This application was created with the functional purpose, not the design one.";
             // 
             // creditsLabel
             // 
             this.creditsLabel.AutoSize = true;
-            this.creditsLabel.Location = new System.Drawing.Point(12, 130);
+            this.creditsLabel.Location = new System.Drawing.Point(12, 108);
             this.creditsLabel.Name = "creditsLabel";
             this.creditsLabel.Size = new System.Drawing.Size(63, 23);
             this.creditsLabel.TabIndex = 2;
@@ -64,15 +64,15 @@
             // divider
             // 
             this.divider.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.divider.Location = new System.Drawing.Point(0, 120);
+            this.divider.Location = new System.Drawing.Point(0, 91);
             this.divider.Name = "divider";
-            this.divider.Size = new System.Drawing.Size(600, 2);
+            this.divider.Size = new System.Drawing.Size(800, 2);
             this.divider.TabIndex = 3;
             // 
             // deleteButtonLink
             // 
             this.deleteButtonLink.AutoSize = true;
-            this.deleteButtonLink.Location = new System.Drawing.Point(12, 157);
+            this.deleteButtonLink.Location = new System.Drawing.Point(12, 136);
             this.deleteButtonLink.Name = "deleteButtonLink";
             this.deleteButtonLink.Size = new System.Drawing.Size(462, 23);
             this.deleteButtonLink.TabIndex = 4;
@@ -84,7 +84,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 71);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 45);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(39, 46);
             this.pictureBox1.TabIndex = 5;
@@ -95,7 +95,7 @@
             // editButtonLink
             // 
             this.editButtonLink.AutoSize = true;
-            this.editButtonLink.Location = new System.Drawing.Point(12, 180);
+            this.editButtonLink.Location = new System.Drawing.Point(12, 163);
             this.editButtonLink.Name = "editButtonLink";
             this.editButtonLink.Size = new System.Drawing.Size(432, 23);
             this.editButtonLink.TabIndex = 4;
@@ -106,7 +106,7 @@
             // AboutForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(584, 261);
+            this.ClientSize = new System.Drawing.Size(670, 204);
             this.Controls.Add(this.editButtonLink);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.deleteButtonLink);

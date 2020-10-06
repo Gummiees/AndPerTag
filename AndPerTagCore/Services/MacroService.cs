@@ -10,16 +10,10 @@ namespace AndPerTagCore.Services
 {
     public class MacroService
     {
-        private TagsService tagService;
-
-        #region CONSTANTS
-
-        private const int buttonLeft = 425;
-
-        #endregion CONSTANTS
+        private readonly TagsService tagService;
 
         #region EVENTS
-        public event EventHandler refreshMacrosHandler;
+        public event EventHandler RefreshMacrosHandler;
         #endregion
 
         public MacroService(TagsService tagService)
@@ -36,33 +30,46 @@ namespace AndPerTagCore.Services
             int top;
             foreach (Tag tag in tagService.AllTags.Tags)
             {
-                foreach (Macro macro in tag.Macros)
+                if (tag.Macros != null)
                 {
-                    top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
-                    Button button = new Button
+                    foreach (Macro macro in tag.Macros)
                     {
-                        Top = top,
-                        Left = buttonLeft,
-                        Text = $"{macro.Name} ({tag.Name})",
-                        Name = macro.Name,
-                        Tag = GlobalConstants.removableTagMacro,
-                        BackColor = ColorTranslator.FromHtml(tag.Color),
-                        Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
-                        TextAlign = ContentAlignment.MiddleLeft,
-                        FlatStyle = FlatStyle.Flat
-                    };
-                    button.FlatAppearance.BorderSize = 1;
-                    button.FlatAppearance.BorderColor = Color.Black;
+                        top = GlobalConstants.buttonInitialTop + (GlobalConstants.buttonTop * i);
+                        Button button = new Button
+                        {
+                            Top = top,
+                            Left = GlobalConstants.buttonLeft,
+                            Text = $"{macro.Name} ({tag.Name})",
+                            Name = macro.Name,
+                            Tag = GlobalConstants.removableTagMacro,
+                            BackColor = ColorTranslator.FromHtml(tag.Color),
+                            Size = new Size(GlobalConstants.buttonWidth, GlobalConstants.buttonHeight),
+                            TextAlign = ContentAlignment.MiddleLeft,
+                            FlatStyle = FlatStyle.Flat
+                        };
+                        button.FlatAppearance.BorderSize = 1;
+                        button.FlatAppearance.BorderColor = Color.Black;
 
-                    Button editButton = SmallButtons.GetEditButton(macro.Name, GlobalConstants.removableTagMacro, top, buttonLeft + GlobalConstants.buttonWidth);
-                    controls.Add(editButton);
+                        Button editButton = SmallButtons.GetEditButton(
+                            macro.Name,
+                            GlobalConstants.removableTagMacro,
+                            top,
+                            GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                        );
+                        controls.Add(editButton);
 
-                    Button deleteButton = SmallButtons.GetDeleteButton(macro.Name, GlobalConstants.removableTagMacro, top, buttonLeft + GlobalConstants.buttonWidth);
-                    deleteButton.Click += new EventHandler(RemoveMacroEvent);
-                    controls.Add(deleteButton);
+                        Button deleteButton = SmallButtons.GetDeleteButton(
+                            macro.Name,
+                            GlobalConstants.removableTagMacro,
+                            top,
+                            GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
+                        );
+                        deleteButton.Click += new EventHandler(RemoveMacroEvent);
+                        controls.Add(deleteButton);
 
-                    controls.Add(button);
-                    i++;
+                        controls.Add(button);
+                        i++;
+                    }
                 }
             }
         }
@@ -75,11 +82,14 @@ namespace AndPerTagCore.Services
         /// <returns></returns>
         public Macro GetMacro(Tag tag, string macroName)
         {
-            foreach (Macro macro in tag.Macros)
+            if (tag.Macros != null)
             {
-                if (macro.Name.Equals(macroName))
+                foreach (Macro macro in tag.Macros)
                 {
-                    return macro;
+                    if (macro.Name.Equals(macroName))
+                    {
+                        return macro;
+                    }
                 }
             }
 
@@ -98,11 +108,14 @@ namespace AndPerTagCore.Services
             {
                 if (tag.Name.Equals(tagName))
                 {
-                    foreach (Macro macro in tag.Macros)
+                    if (tag.Macros != null)
                     {
-                        if (macro.Name.Equals(macroName))
+                        foreach (Macro macro in tag.Macros)
                         {
-                            return macro;
+                            if (macro.Name.Equals(macroName))
+                            {
+                                return macro;
+                            }
                         }
                     }
                 }
@@ -152,12 +165,12 @@ namespace AndPerTagCore.Services
                 if (save)
                 {
                     JSONUtilities.Write(tagService.AllTags);
-                    refreshMacrosHandler?.Invoke(null, null);
+                    RefreshMacrosHandler?.Invoke(null, null);
                 }
             }
             else
             {
-                throw new ArgumentException($"Macro '{macro.Name}' already exists");
+                Messages.ShowWarningMessage($"The macro '{macro.Name}' already exists", "Already exists");
             }
         }
 
@@ -180,13 +193,13 @@ namespace AndPerTagCore.Services
 
             if (macro == null)
             {
-                throw new ArgumentException($"The macro '{macroName}' was not found.");
+                Messages.ShowWarningMessage($"The macro '{macroName}' was not found", "Not found");
             }
 
             if (save)
             {
                 JSONUtilities.Write(tagService.AllTags);
-                refreshMacrosHandler?.Invoke(macroName, null);
+                RefreshMacrosHandler?.Invoke(macroName, null);
             }
         }
 
@@ -227,7 +240,7 @@ namespace AndPerTagCore.Services
             if (save)
             {
                 JSONUtilities.Write(tagService.AllTags);
-                refreshMacrosHandler?.Invoke(null, null);
+                RefreshMacrosHandler?.Invoke(null, null);
             }
         }
     }
