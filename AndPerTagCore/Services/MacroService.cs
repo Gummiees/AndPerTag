@@ -214,13 +214,8 @@ namespace AndPerTagCore.Services
         {
             if (sender is Button button)
             {
-                var confirmResult = MessageBox.Show(
-                        $"Are you sure to remove the macro '{button.Name}'?",
-                        "Remove macro",
-                        MessageBoxButtons.YesNo
-                    );
-
-                if (confirmResult == DialogResult.Yes)
+                var confirmResult = Messages.RemoveDialog("macro", button.Name);
+                if (confirmResult.Equals(DialogResult.Yes))
                 {
                     RemoveMacro(button.Name);
                 }

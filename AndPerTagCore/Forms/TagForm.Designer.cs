@@ -116,7 +116,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "nameLabel";
-            this.Text = "Name";
+            this.Text = "AndPerTag";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,11 +124,11 @@
 
         #endregion
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Label tagLabel;
         private System.Windows.Forms.Label colorLabel;
         public System.Windows.Forms.TextBox nameTextBox;
         public System.Windows.Forms.Button colorButton;
         public System.Windows.Forms.ColorDialog colorDialog;
         public System.Windows.Forms.Button acceptButton;
+        public System.Windows.Forms.Label tagLabel;
     }
 }

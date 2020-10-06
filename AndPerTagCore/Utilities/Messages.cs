@@ -43,6 +43,14 @@ namespace AndPerTagCore.Utilities
         {
             ShowErrorMessage("There was an error while parsing the object to a JSON or viceversa", "Error parsing");
         }
+
+        public static DialogResult RemoveDialog(string type, string name)
+        {
+            return MessageBox.Show(
+                    $"Are you sure to remove the {type} '{name}'?",
+                    $"AndPerTag - Remove {type}",
+                    MessageBoxButtons.YesNo
+                );
+        }
     }
-}
 }

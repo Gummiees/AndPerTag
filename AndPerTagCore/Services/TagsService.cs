@@ -20,6 +20,13 @@ namespace AndPerTagCore.Services
 
         #endregion EVENTS
 
+        #region CONSTANTS
+
+        private const string createTagText = "Create new tag";
+        private const string editTagText = "Edit tag";
+
+        #endregion CONSTANTS
+
         /// <summary>
         /// Gets all tags from the JSON file.
         /// </summary>
@@ -125,7 +132,8 @@ namespace AndPerTagCore.Services
         /// </summary>
         public void CreateTagEvent()
         {
-            TagForm tagForm = new TagForm();
+            Forms.TagForm tagForm = new Forms.TagForm();
+            tagForm.tagLabel.Text = createTagText;
             tagForm.acceptEventHandler += AcceptCreateTagEvent;
             tagForm.Show();
         }
@@ -184,13 +192,8 @@ namespace AndPerTagCore.Services
         {
             if (sender is Button button)
             {
-                var confirmResult = MessageBox.Show(
-                       $"Are you sure to remove the tag '{button.Name}'? All the macros from this tag will be removed!",
-                       "Remove tag",
-                       MessageBoxButtons.YesNo
-                   );
-
-                if (confirmResult == DialogResult.Yes)
+                var confirmResult = Messages.RemoveDialog("tag", button.Name);
+                if (confirmResult.Equals(DialogResult.Yes))
                 {
                     RemoveTag(button.Name);
                 }
@@ -225,11 +228,12 @@ namespace AndPerTagCore.Services
             if (sender is Button button)
             {
                 Tag tag = GetTag(button.Name);
-                TagForm tagForm = new TagForm
+                Forms.TagForm tagForm = new Forms.TagForm
                 {
-                    originalTag = tag
+                    originalTag = tag,
                 };
                 tagForm.nameTextBox.Text = tag.Name;
+                tagForm.tagLabel.Text = editTagText;
                 tagForm.colorButton.BackColor = ColorTranslator.FromHtml(tag.Color);
                 tagForm.colorDialog.Color = ColorTranslator.FromHtml(tag.Color);
 
