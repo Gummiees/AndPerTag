@@ -1,5 +1,5 @@
 ﻿using AndPerTag.Models;
-using AndPerTagCore.Models.Events;
+using AndPerTagCore.Events;
 using AndPerTagCore.Utilities;
 using System;
 using System.Windows.Forms;
@@ -43,7 +43,7 @@ namespace AndPerTagCore.Forms
                     Original = originalTag,
                     Created = new Tag()
                     {
-                        Name = nameTextBox.Text,
+                        Name = nameTextBox.Text.Trim(),
                         Color = $"#{colorDialog.Color.ToArgb() & 0x00FFFFFF:X6}",
                         Macros = originalTag?.Macros
                     }

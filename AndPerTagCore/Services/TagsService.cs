@@ -1,7 +1,7 @@
 ﻿using AndPerTag.Models;
 using AndPerTag.Utilities;
+using AndPerTagCore.Events;
 using AndPerTagCore.Forms;
-using AndPerTagCore.Models.Events;
 using AndPerTagCore.Utilities;
 using System;
 using System.Collections.Generic;

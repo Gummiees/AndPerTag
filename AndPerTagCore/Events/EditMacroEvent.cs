@@ -1,6 +1,7 @@
 ﻿using AndPerTag.Models;
+using AndPerTagCore.Models;
 
-namespace AndPerTagCore.Models.Events
+namespace AndPerTagCore.Events
 {
     public class EditMacroEvent
     {

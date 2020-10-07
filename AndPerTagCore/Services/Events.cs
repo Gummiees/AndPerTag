@@ -1,6 +1,7 @@
 ﻿using AndPerTag.Events;
 using AndPerTag.Models;
 using AndPerTag.Utilities;
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using WindowsHook;
@@ -19,7 +20,7 @@ namespace AndPerTag.Services
 
         #region EVENTS
 
-        public event MacroEventHandler macroEventHandler;
+        public event EventHandler MacroEventHandler;
 
         #endregion EVENTS
 
@@ -71,9 +72,8 @@ namespace AndPerTag.Services
             {
                 SetMacro();
             }
-            // If the key number is between 'A' and 'Z', it belongs to the tag name.
-            // TODO: The program should also accept numbers on the macro names.
-            else if (e.KeyData >= WindowsHook.Keys.A && e.KeyData <= WindowsHook.Keys.Z && pressedAndpersand)
+            // If the key number is between '0' and 'Z', it belongs to the tag name.
+            else if (e.KeyData >= WindowsHook.Keys.D0 && e.KeyData <= WindowsHook.Keys.Z && pressedAndpersand)
             {
                 macroName += (char)e.KeyData;
             }
@@ -86,16 +86,16 @@ namespace AndPerTag.Services
         {
             Macro macro = GetMacro();
             // Emits the event with the user search and if it has been found.
-            MacroEventArgs args = new MacroEventArgs()
+            MacroEvent e = new MacroEvent()
             {
                 UserText = macroName,
                 Found = false
             };
             if (macro != null)
             {
-                CopyAndPasteMacro(macro, args);
+                CopyAndPasteMacro(macro, e);
             }
-            macroEventHandler?.Invoke(null, args);
+            MacroEventHandler?.Invoke(e, null);
             // Reset the macroName.
             macroName = null;
             pressedAndpersand = false;
@@ -106,7 +106,7 @@ namespace AndPerTag.Services
         /// </summary>
         /// <param name="macro"></param>
         /// <param name="args"></param>
-        private void CopyAndPasteMacro(Macro macro, MacroEventArgs args)
+        private void CopyAndPasteMacro(Macro macro, MacroEvent e)
         {
             // Saves the current clipboard
             string clipboard = Clipboard.GetText();
@@ -117,7 +117,7 @@ namespace AndPerTag.Services
             SendKeys.Send(ctrlV);
             // Restores the clipboard
             Clipboard.SetText(clipboard);
-            args.Found = true;
+            e.Found = true;
         }
 
         /// <summary>

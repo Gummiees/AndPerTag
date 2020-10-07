@@ -1,6 +1,6 @@
 ﻿using AndPerTag.Models;
 
-namespace AndPerTagCore.Models.Events
+namespace AndPerTagCore.Events
 {
     public class EditTagEvent
     {

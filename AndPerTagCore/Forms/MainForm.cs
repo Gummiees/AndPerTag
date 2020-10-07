@@ -20,7 +20,7 @@ namespace AndPerTagCore.Forms
             GlobalKeyEvents globalKeyEvents = new GlobalKeyEvents();
             globalKeyEvents.SubscribeGlobal();
             FormClosing += globalKeyEvents.Main_Closing;
-            globalKeyEvents.macroEventHandler += MacroEventListener;
+            globalKeyEvents.MacroEventHandler += MacroEventListener;
 
             macroService = new MacroService(tagsService);
 
@@ -30,9 +30,9 @@ namespace AndPerTagCore.Forms
             tagsService.refreshTagsHandler += RemoveTagsEvent;
         }
 
-        private void MacroEventListener(object sender, MacroEventArgs e)
+        private void MacroEventListener(object sender, EventArgs args)
         {
-            if (!e.Found)
+            if (sender is MacroEvent e && !e.Found)
             {
                 ShowBalloonTip($"Macro '{e.UserText}' was not found", ToolTipIcon.Warning);
             }
@@ -119,9 +119,9 @@ namespace AndPerTagCore.Forms
         }
 
         /// <summary>
-        /// FIXME: Shows a Balloon tip on the tray icon.
+        /// Shows a Balloon tip on the tray icon.
         /// </summary>
-        /// <param name="title"></param>
+        /// <param name="text"></param>
         /// <param name="icon"></param>
         private void ShowBalloonTip(string text, ToolTipIcon? icon = null)
         {
@@ -157,7 +157,6 @@ namespace AndPerTagCore.Forms
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            // TODO: Create About window.
             AboutForm aboutForm = new AboutForm();
             aboutForm.Show();
         }
