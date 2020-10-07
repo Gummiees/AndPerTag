@@ -145,7 +145,7 @@
             // 
             this.macrosLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.macrosLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.macrosLabel.Location = new System.Drawing.Point(-1, 27);
+            this.macrosLabel.Location = new System.Drawing.Point(28, 27);
             this.macrosLabel.Name = "macrosLabel";
             this.macrosLabel.Size = new System.Drawing.Size(252, 57);
             this.macrosLabel.TabIndex = 0;

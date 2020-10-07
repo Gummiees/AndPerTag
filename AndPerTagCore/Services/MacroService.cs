@@ -205,6 +205,40 @@ namespace AndPerTagCore.Services
         }
 
         /// <summary>
+        /// Handles the create button event for a macro.
+        /// </summary>
+        public void CreateMacroEvent()
+        {
+            if (tagService.AllTags.Tags == null || !tagService.AllTags.Tags.Any())
+            {
+                Messages.ShowWarningMessage($"To create a macro you first need to have at least one tag", "No tags found");
+            }
+            else
+            {
+                MacroForm macroForm = new MacroForm();
+                macroForm.macroLabel.Text = createMacroText;
+                macroForm.tagComboBox.DataSource = tagService.AllTags.Tags;
+                macroForm.tagComboBox.DisplayMember = "Name";
+                macroForm.tagComboBox.ValueMember = "Name";
+                macroForm.acceptEventHandler += AcceptCreateMacroEvent;
+                macroForm.Show();
+            }
+        }
+
+        /// <summary>
+        /// Handles the accept button on the create form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AcceptCreateMacroEvent(object sender, EventArgs e)
+        {
+            if (sender is EditMacroEvent editMacroEvent)
+            {
+                CreateMacro(editMacroEvent.Created.Tag.Name, editMacroEvent.Created.Macro);
+            }
+        }
+
+        /// <summary>
         /// Removes the indicated macro.
         /// </summary>
         /// <param name="macro"></param>
@@ -291,7 +325,7 @@ namespace AndPerTagCore.Services
         /// <param name="e"></param>
         private void EditMacroEvent(object sender, EventArgs e)
         {
-            if (tagService.AllTags.Tags == null)
+            if (tagService.AllTags.Tags == null || tagService.AllTags.Tags.Any())
             {
                 Messages.ShowWarningMessage($"To create a macro you first need to have at least one tag", "No tags found");
             }

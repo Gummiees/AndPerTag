@@ -162,24 +162,6 @@ namespace AndPerTagCore.Forms
             aboutForm.Show();
         }
 
-        /// <summary>
-        /// Confirmation before deleting a tag.
-        /// </summary>
-        /// <param name="tagName"></param>
-        private void ConfirmDeleteTag(string tagName)
-        {
-            var confirmResult = MessageBox.Show(
-                    "Are you sure to delete this tag?",
-                    "Confirm Delete",
-                    MessageBoxButtons.YesNo
-                );
-
-            if (confirmResult == DialogResult.Yes)
-            {
-                tagsService.RemoveTag(tagName);
-            }
-        }
-
         private void createTagButton_Click(object sender, EventArgs e)
         {
             tagsService.CreateTagEvent();
@@ -187,6 +169,7 @@ namespace AndPerTagCore.Forms
 
         private void addMacroButton_Click(object sender, EventArgs e)
         {
+            macroService.CreateMacroEvent();
         }
     }
 }
