@@ -150,10 +150,6 @@ namespace AndPerTagCore.Forms
             ShowBalloonTip("AndPerTag is working on background");
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-        }
-
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             AboutForm aboutForm = new AboutForm();
