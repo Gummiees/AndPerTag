@@ -325,7 +325,7 @@ namespace AndPerTagCore.Services
         /// <param name="e"></param>
         private void EditMacroEvent(object sender, EventArgs e)
         {
-            if (tagService.AllTags.Tags == null || tagService.AllTags.Tags.Any())
+            if (tagService.AllTags.Tags == null || !tagService.AllTags.Tags.Any())
             {
                 Messages.ShowWarningMessage($"To create a macro you first need to have at least one tag", "No tags found");
             }
