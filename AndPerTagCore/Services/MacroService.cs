@@ -70,7 +70,7 @@ namespace AndPerTagCore.Services
                                 top,
                                 GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
                             );
-                            editButton.Click += new EventHandler(EditMacroEvent);
+                            editButton.Click += EditMacroEvent;
                             controls.Add(editButton);
 
                             Button deleteButton = SmallButtons.GetDeleteButton(
@@ -79,7 +79,7 @@ namespace AndPerTagCore.Services
                                 top,
                                 GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
                             );
-                            deleteButton.Click += new EventHandler(RemoveMacroEvent);
+                            deleteButton.Click += RemoveMacroEvent;
                             controls.Add(deleteButton);
 
                             controls.Add(button);
@@ -220,7 +220,7 @@ namespace AndPerTagCore.Services
                 macroForm.tagComboBox.DataSource = tagService.AllTags.Tags;
                 macroForm.tagComboBox.DisplayMember = "Name";
                 macroForm.tagComboBox.ValueMember = "Name";
-                macroForm.acceptEventHandler += AcceptCreateMacroEvent;
+                macroForm.AcceptEventHandler += AcceptCreateMacroEvent;
                 macroForm.Show();
             }
         }
@@ -279,7 +279,7 @@ namespace AndPerTagCore.Services
         private void RemoveMacro(string macroName, bool save = true)
         {
             Macro macro = GetMacro(macroName);
-            RemoveMacro(macro);
+            RemoveMacro(macro, save);
         }
 
         /// <summary>
@@ -332,10 +332,8 @@ namespace AndPerTagCore.Services
             else if (sender is Button button)
             {
                 Macro macro = GetMacro(button.Name);
-                MacroForm macroForm = new MacroForm
-                {
-                    originalMacro = macro
-                };
+                MacroForm macroForm = new MacroForm();
+                macroForm.SetOriginalMacro(macro);
                 macroForm.macroLabel.Text = editMacroText;
                 macroForm.nameTextBox.Text = macro.Name;
                 macroForm.textTextBox.Text = macro.Text;
@@ -344,7 +342,7 @@ namespace AndPerTagCore.Services
                 macroForm.tagComboBox.ValueMember = "Name";
                 macroForm.tagComboBox.SelectedItem = tagService.GetTagByMacro(macro.Name);
 
-                macroForm.acceptEventHandler += AcceptEditMacroEvent;
+                macroForm.AcceptEventHandler += AcceptEditMacroEvent;
                 macroForm.Show();
             }
         }

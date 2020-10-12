@@ -10,19 +10,28 @@ namespace AndPerTagCore.Forms
     {
         #region GLOBAL VARIABLES
 
-        public Tag originalTag;
+        private Tag OriginalTag { get; set; }
 
         #endregion GLOBAL VARIABLES
 
         #region EVENTS
 
-        public event EventHandler acceptEventHandler;
+        public event EventHandler AcceptEventHandler;
 
         #endregion EVENTS
 
         public TagForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Public setter for the original tag.
+        /// </summary>
+        /// <param name="originalTag"></param>
+        public void SetOriginalTag(Tag originalTag)
+        {
+            OriginalTag = originalTag;
         }
 
         private void colorButton_Click(object sender, EventArgs e)
@@ -38,28 +47,24 @@ namespace AndPerTagCore.Forms
             // Only send event if name and color are filled.
             if (!string.IsNullOrWhiteSpace(nameTextBox.Text) && colorDialog.Color != null)
             {
-                EditTagEvent editTagEvent = new EditTagEvent()
+                EditTagEvent editTagEvent = new EditTagEvent
                 {
-                    Original = originalTag,
-                    Created = new Tag()
+                    Original = OriginalTag,
+                    Created = new Tag
                     {
                         Name = nameTextBox.Text.Trim(),
                         Color = $"#{colorDialog.Color.ToArgb() & 0x00FFFFFF:X6}",
-                        Macros = originalTag?.Macros
+                        Macros = OriginalTag?.Macros
                     }
                 };
 
-                acceptEventHandler?.Invoke(editTagEvent, e);
+                AcceptEventHandler.Invoke(editTagEvent, e);
                 Close();
             }
             else
             {
                 Messages.InvalidForm();
             }
-        }
-
-        private void TagForm_Load(object sender, EventArgs e)
-        {
         }
     }
 }

@@ -41,7 +41,7 @@
             // 
             this.nameTextBox.Location = new System.Drawing.Point(50, 99);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(442, 27);
+            this.nameTextBox.Size = new System.Drawing.Size(442, 23);
             this.nameTextBox.TabIndex = 0;
             // 
             // acceptButton
@@ -69,7 +69,7 @@
             this.tagLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tagLabel.Location = new System.Drawing.Point(27, 25);
             this.tagLabel.Name = "tagLabel";
-            this.tagLabel.Size = new System.Drawing.Size(54, 32);
+            this.tagLabel.Size = new System.Drawing.Size(43, 25);
             this.tagLabel.TabIndex = 5;
             this.tagLabel.Text = "Tag";
             // 
@@ -117,7 +117,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Tag = "nameLabel";
             this.Text = "AndPerTag";
-            this.Load += new System.EventHandler(this.TagForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

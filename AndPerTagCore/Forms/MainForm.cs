@@ -152,7 +152,6 @@ namespace AndPerTagCore.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // HideWindow();
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

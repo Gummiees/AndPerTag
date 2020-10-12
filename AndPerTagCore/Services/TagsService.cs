@@ -73,7 +73,7 @@ namespace AndPerTagCore.Services
                         top,
                         GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
                     );
-                    editButton.Click += new EventHandler(EditTagEvent);
+                    editButton.Click += EditTagEvent;
                     controls.Add(editButton);
 
                     Button deleteButton = SmallButtons.GetDeleteButton(
@@ -82,7 +82,7 @@ namespace AndPerTagCore.Services
                         top,
                         GlobalConstants.buttonLeft + GlobalConstants.buttonWidth
                     );
-                    deleteButton.Click += new EventHandler(RemoveTagEvent);
+                    deleteButton.Click += RemoveTagEvent;
                     controls.Add(deleteButton);
 
                     i++;
@@ -145,7 +145,7 @@ namespace AndPerTagCore.Services
         {
             TagForm tagForm = new TagForm();
             tagForm.tagLabel.Text = createTagText;
-            tagForm.acceptEventHandler += AcceptCreateTagEvent;
+            tagForm.AcceptEventHandler += AcceptCreateTagEvent;
             tagForm.Show();
         }
 
@@ -166,7 +166,7 @@ namespace AndPerTagCore.Services
         /// Removes the indicated tag.
         /// </summary>
         /// <param name="tag"></param>
-        private void RemoveTag(Tag tag, bool save = true)
+        private void RemoveTag(Tag tag, bool save)
         {
             if (tag == null)
             {
@@ -188,7 +188,7 @@ namespace AndPerTagCore.Services
         /// Removes the indicated tag.
         /// </summary>
         /// <param name="tagName"></param>
-        public void RemoveTag(string tagName, bool save = true)
+        public void RemoveTag(string tagName, bool save)
         {
             Tag tag = GetTag(tagName);
             RemoveTag(tag, save);
@@ -206,7 +206,7 @@ namespace AndPerTagCore.Services
                 var confirmResult = Messages.RemoveDialog("tag", button.Name);
                 if (confirmResult.Equals(DialogResult.Yes))
                 {
-                    RemoveTag(button.Name);
+                    RemoveTag(button.Name, true);
                 }
             }
         }
@@ -239,16 +239,14 @@ namespace AndPerTagCore.Services
             if (sender is Button button)
             {
                 Tag tag = GetTag(button.Name);
-                TagForm tagForm = new TagForm
-                {
-                    originalTag = tag
-                };
+                TagForm tagForm = new TagForm();
+                tagForm.SetOriginalTag(tag);
                 tagForm.tagLabel.Text = editTagText;
                 tagForm.nameTextBox.Text = tag.Name;
                 tagForm.colorButton.BackColor = ColorTranslator.FromHtml(tag.Color);
                 tagForm.colorDialog.Color = ColorTranslator.FromHtml(tag.Color);
 
-                tagForm.acceptEventHandler += AcceptEditTagEvent;
+                tagForm.AcceptEventHandler += AcceptEditTagEvent;
                 tagForm.Show();
             }
         }

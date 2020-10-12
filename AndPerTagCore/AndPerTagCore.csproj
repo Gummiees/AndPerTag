@@ -4,8 +4,14 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>Assets\Icon\andpertag_logo.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\Images\andpertag_logo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Assets\Icon\**" />
+    <EmbeddedResource Remove="Assets\Icon\**" />
+    <None Remove="Assets\Icon\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Forms\MainForm - Copy.cs" />
@@ -17,8 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Icon\andpertag_logo.ico" />
-    <None Remove="Assets\Icon\andpertag_logo.png" />
     <None Remove="Assets\Images\delete.png" />
     <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\Images\github-logo.png" />
@@ -26,12 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Icon\andpertag_logo.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Icon\andpertag_logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Assets\Images\edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

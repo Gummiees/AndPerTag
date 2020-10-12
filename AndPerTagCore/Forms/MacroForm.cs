@@ -12,20 +12,29 @@ namespace AndPerTagCore.Forms
     {
         #region GLOBAL VARIABLES
 
-        public Macro originalMacro;
+        private Macro OriginalMacro { get; set; }
         private readonly Regex regex = new Regex(@"^[a-zA-Z0-9]+$");
 
         #endregion GLOBAL VARIABLES
 
         #region EVENTS
 
-        public event EventHandler acceptEventHandler;
+        public event EventHandler AcceptEventHandler;
 
         #endregion EVENTS
 
         public MacroForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Public setter for the original macro.
+        /// </summary>
+        /// <param name="originalMacro"></param>
+        public void SetOriginalMacro(Macro originalMacro)
+        {
+            OriginalMacro = originalMacro;
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
@@ -40,12 +49,12 @@ namespace AndPerTagCore.Forms
                 tagComboBox.SelectedItem is Tag tag
             )
             {
-                EditMacroEvent editTagEvent = new EditMacroEvent()
+                EditMacroEvent editTagEvent = new EditMacroEvent
                 {
-                    Original = originalMacro,
-                    Created = new EditMacro()
+                    Original = OriginalMacro,
+                    Created = new EditMacro
                     {
-                        Macro = new Macro()
+                        Macro = new Macro
                         {
                             Name = nameTextBox.Text.Trim(),
                             Text = textTextBox.Text.Trim()
@@ -54,7 +63,7 @@ namespace AndPerTagCore.Forms
                     }
                 };
 
-                acceptEventHandler?.Invoke(editTagEvent, e);
+                AcceptEventHandler.Invoke(editTagEvent, e);
                 Close();
             }
             else if (!isMatch)
@@ -65,10 +74,6 @@ namespace AndPerTagCore.Forms
             {
                 Messages.InvalidForm();
             }
-        }
-
-        private void MacroForm_Load(object sender, EventArgs e)
-        {
         }
     }
 }

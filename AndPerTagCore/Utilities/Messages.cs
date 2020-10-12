@@ -4,27 +4,27 @@ namespace AndPerTagCore.Utilities
 {
     public static class Messages
     {
-        public static void ShowMessage(MessageBoxIcon? type, string text = null, string title = null)
+        public static void ShowMessage(MessageBoxIcon? type, string text, string title)
         {
             MessageBox.Show(text, title, MessageBoxButtons.OK, type ?? MessageBoxIcon.Error);
         }
 
-        public static void ShowErrorMessage(string text = null, string title = null)
+        public static void ShowErrorMessage(string text, string title)
         {
             ShowMessage(MessageBoxIcon.Error, text, title);
         }
 
-        public static void ShowWarningMessage(string text = null, string title = null)
+        public static void ShowWarningMessage(string text, string title)
         {
             ShowMessage(MessageBoxIcon.Warning, text, title);
         }
 
-        public static void ShowInfoMessage(string text = null, string title = null)
+        public static void ShowInfoMessage(string text, string title)
         {
             ShowMessage(MessageBoxIcon.Information, text, title);
         }
 
-        public static void ShowHelpMessage(string text = null, string title = null)
+        public static void ShowHelpMessage(string text, string title)
         {
             ShowMessage(MessageBoxIcon.Question, text, title);
         }

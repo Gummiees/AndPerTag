@@ -13,7 +13,7 @@ namespace AndPerTag.Services
         #region GLOBAL VARIABLES
 
         private IKeyboardMouseEvents m_GlobalHook;
-        private bool pressedAndpersand = false;
+        private bool pressedAndpersand;
         private string macroName;
 
         #endregion GLOBAL VARIABLES
@@ -49,7 +49,10 @@ namespace AndPerTag.Services
 
         private void Unsubscribe()
         {
-            if (m_GlobalHook == null) return;
+            if (m_GlobalHook == null)
+            {
+                return;
+            }
 
             m_GlobalHook.Dispose();
             m_GlobalHook = null;
@@ -86,7 +89,7 @@ namespace AndPerTag.Services
         {
             Macro macro = GetMacro();
             // Emits the event with the user search and if it has been found.
-            MacroEvent e = new MacroEvent()
+            MacroEvent e = new MacroEvent
             {
                 UserText = macroName,
                 Found = false
@@ -95,7 +98,7 @@ namespace AndPerTag.Services
             {
                 CopyAndPasteMacro(macro, e);
             }
-            MacroEventHandler?.Invoke(e, null);
+            MacroEventHandler.Invoke(e, null);
             // Reset the macroName.
             macroName = null;
             pressedAndpersand = false;
