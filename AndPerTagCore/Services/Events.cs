@@ -136,7 +136,7 @@ namespace AndPerTag.Services
                 {
                     foreach (Macro macro in tag.Macros)
                     {
-                        if (macro.Name.ToUpper().Trim().Equals(macroName.ToUpper().Trim()))
+                        if (macro.Name.ToUpperInvariant().Trim().Equals(macroName.ToUpperInvariant().Trim()))
                         {
                             return macro;
                         }
